@@ -1,0 +1,6 @@
+.env
+firebase_config.py
+manage.py
+
+.idea/
+__pycache__/
