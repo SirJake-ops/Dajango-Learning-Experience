@@ -20,10 +20,10 @@ class ApplicationUserManager(BaseUserManager):
 
 
 class ApplicationUser(AbstractBaseUser, PermissionsMixin):
-    user_id = models.AutoField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     username = models.CharField(max_length=50)
     email = models.EmailField(max_length=50, unique=True)
-    password = models.CharField(max_length=50)
+    password = models.CharField(max_length=128)
     user_type = models.CharField(max_length=50)
     last_login = models.DateTimeField(blank=True, null=True)
     is_active = models.BooleanField(default=True)

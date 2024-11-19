@@ -81,17 +81,23 @@ LOGGING = {
     'disable_existing_loggers': False,
     'handlers': {
         'console': {
-            'level': 'DEBUG',
             'class': 'logging.StreamHandler',
         },
     },
-    'loggers': {
-        'django': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-        },
+    'root': {
+        'handlers': ['console'],
+        'level': 'DEBUG',
     },
 }
+
+PASSWORD_HASHERS = [
+    'application_user.hashers.DummyPasswordHasher',
+    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
+    'django.contrib.auth.hashers.BCryptPasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+    'django.contrib.auth.hashers.Argon2PasswordHasher',
+]
 
 WSGI_APPLICATION = 'DjangoAPI.wsgi.application'
 
@@ -110,6 +116,7 @@ DATABASES = {
 }
 
 AUTHENTICATION_BACKENDS = [
+    'application_user.backends.EmailBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
 
