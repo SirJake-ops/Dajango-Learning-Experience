@@ -19,7 +19,7 @@ class ApplicationUserCreateUserSerializer(serializers.ModelSerializer):
             username=validated_data['username'],
             password=validated_data['password']
         )
-        user.set_password(validated_data['password'])  # This right here is already hashed quit asking to hash it again
+        user.set_password(validated_data['password'])
         user.save()
         return user
 
