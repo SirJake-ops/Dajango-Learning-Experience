@@ -1,9 +1,13 @@
+import logging
+
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth import authenticate
 from django.contrib.auth.hashers import make_password
 
 from .models import ApplicationUser
+
+logger = logging.getLogger(__name__)
 
 
 class ApplicationUserSerializer(serializers.ModelSerializer):
@@ -17,9 +21,8 @@ class ApplicationUserCreateUserSerializer(serializers.ModelSerializer):
         user = ApplicationUser(
             email=validated_data['email'],
             username=validated_data['username'],
-            password=validated_data['password']
         )
-        user.set_password(validated_data['password'])
+        user.set_password(make_password(validated_data['password']))
         user.save()
         return user
 
@@ -39,10 +42,13 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 
         user = authenticate(username=email, password=password, request=request)
         if user is None:
+            logger.debug(f"user is not valid: {email}, {password}, {user}")
             raise serializers.ValidationError('Invalid username or password')
 
         refresh = self.get_token(user)
 
         return {
             'refresh': str(refresh),
+            'access': str(refresh.access_token),
+            'user_id': user.id,
         }

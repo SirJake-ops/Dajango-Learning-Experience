@@ -12,13 +12,11 @@ class EmailBackend(ModelBackend):
         user_model = get_user_model()
         try:
             user = user_model.objects.get(email=username)
-            logger.info(f"User found: {user}")
         except user_model.DoesNotExist:
             return None
 
         if user:
             if user.check_password(password):
-                logger.info(f"User authenticated: {user}")
                 if self.user_can_authenticate(user):
                     return user
                 else:
