@@ -26,3 +26,10 @@ class TrackerCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Bug
         fields = ['name', 'description', 'priority', 'status', 'project', 'assigned_to', 'created_by', 'resolved_date']
+
+
+class TrackerDeleteSerializer(serializers.ModelSerializer):
+    def delete(self, validated_data):
+        bug = Bug.objects.get(id=validated_data['id'])
+        bug.delete()
+        return validated_data
